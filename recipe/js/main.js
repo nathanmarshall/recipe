@@ -90,20 +90,15 @@ $(document).on('click', '.recipe-link', function(){
     dataType: 'jsonp',
     data: "recipeClicked=" + recipeClicked ,
     success: function(data) {
+        var ingredients = data.recipe[0].recipeIngredients;
+        ingredients = ingredients.replace(/,/g, '<br>');
+
         $('.recipe-title').html(data.recipe[0].recipeName);
         $('.time').html(data.recipe[0].recipeTime);
         $('.category').html(data.recipe[0].categoryName);
         $('.serves').html(data.recipe[0].recipeServes);
-        $('.recipe-list').html('');
-        $('.ingredients-list').html('');
-        $.each( data.steps , function(i, data){
-          console.log(data);
-          $('.recipe-list').append('<li>' + data.steps + '</li><br>');
-        });
-        $.each( data.ingredients, function(i, data){
-          console.log(data);
-          $('.ingredients-list').append('<span>'+data.ingredient+'</span><span>'+data.quantity+'</span>');
-        });
+        $('.recipe-list').html(data.recipe[0].recipeInstructions);
+        $('.ingredients-list').html(ingredients);
     },
     error: function(data) {
       console.log('AJAX failed');
